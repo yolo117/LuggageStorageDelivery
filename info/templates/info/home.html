@@ -1,0 +1,16 @@
+{% extends "info/base.html" %}
+{% block content %}
+    <h2>Home Template </h2>
+    {% for item in Activities %}
+    
+    <img src="{{item.user_name.profile.image.url}}" alt="">
+    <h3> ID for Tracking: {{ item.activity_id }}</h3>
+      <p> Pickup date: {{ item.pickup_date }} </p>
+      <p> Pickup Location: {{ item.pickup_destination }} </p>
+      <p> Delivery Day: {{ item.delivery_day }} </p>
+      <p> Delivery Location: {{ item.delivery_address }} </p>
+      <p> Date of order placement: {{ item.date_user_requested_service }} </p>
+      <p> User: {{ item.user_name }} </p>
+
+    {% endfor %}
+{% endblock content %}
