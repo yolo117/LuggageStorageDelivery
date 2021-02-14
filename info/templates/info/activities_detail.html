@@ -1,0 +1,143 @@
+{% extends "info/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<article class="media content-section">
+<img class="rounded-circle article-img" src="{{ object.user_name.profile.image.url }}">
+<div class="media-body">
+<div class="list-group">
+  <table class="table">
+  <thead>
+  <tr>
+  <th> Field</th>
+  <th>Value</th>
+
+  </tr>
+  </thead>
+  <tfoot>
+  <tr>
+  <th>Current User</th>
+  <th>{{ object.user_name }}</th>
+
+  </tr>
+  </tfoot>
+  <tbody>
+  <tr>
+  <td>Activity ID</td>
+  <td>{{ object.activity_id }}</td>
+
+  </tr>
+  <tr>
+  <td>Pickup Date</td>
+  <td>{{ object.pickup_date|date:"F d, Y" }}</td>
+
+  </tr>
+  <tr>
+  <td>Pickup Location</td>
+  <td>{{ object.pickup_location }}</td>
+  </tr>
+  {% if object.date_picked_up != None %}
+  <tr>
+  <td>Date Picked Up</td>
+  <td>{{ object.date_picked_up|date:"F d, Y" }}</td>
+  </tr>
+  {% endif%}
+  <tr>
+  <td>Delivery Date</td>
+  <td>{{ object.delivery_date|date:"F d, Y" }}</td>
+
+  </tr>
+  {% if object.date_delivered != None %}
+  <tr>
+  <td>Date Delivered</td>
+  <td>{{ object.date_delivered|date:"F d, Y" }}</td>
+  </tr>
+  {% endif%}
+  <tr>
+  <td>Delivery Address</td>
+  <td>{{ object.delivery_address}}</td>
+
+  </tr>
+  <tr>
+  <td>Number of Boxes</td>
+  <td>{{ object.number_of_boxes }}</td>
+
+  </tr>
+  <tr>
+  <td>Date of Order</td>
+  <td>{{ object.date_user_requested_service|date:"F d, Y" }}</td>
+  </tr>
+  {% if object.pickup_name != None %}
+  <tr>
+  <td>Pickup ID</td>
+  <td>{{ object.pickup_name }}</td>
+  </tr>
+  {% endif%}
+
+
+  {% if object.delivery_name != None %}
+  <tr>
+  <td>Delivery ID</td>
+  <td>{{ object.delivery_name }}</td>
+  </tr>
+  {% endif%}
+
+
+  {% if object.storage_name != None %}
+  <tr>
+  <td>Storage ID</td>
+  <td>{{ object.storage_name }}</td>
+  </tr>
+{% if checker == 'Pickup-from-list'%} <a href="#">update pickup </a>{% endif %}
+
+  {% endif%}
+
+  </tbody>
+  </table>
+
+  {% if  hash  %}
+  <div align="center">
+  {%  if hash.hash1 != "" and hash.hash2 == "" and hash.hash3 == "" and hash.hash4 == "" %}
+  <img src="/media/QRCodes/{{ hash.hash1 }}/{{ hash.hash1 }}.jpg" alt="" style="width: 200px;
+  height: 200px;">
+  <p>  Stick the barcode on the boxe/s for tracking purpose </p>
+  {%  elif hash.hash1 != "" and hash.hash2 != "" and hash.hash3 == "" and hash.hash4 == "" %}
+  <img src="/media/QRCodes/{{ hash.hash1 }}/{{ hash.hash1 }}.jpg" alt="" style="width: 200px;
+  height: 200px;">
+  <img src="/media/QRCodes/{{ hash.hash2 }}/{{ hash.hash2 }}.jpg" alt="" style="width: 200px;
+  height: 200px;">
+
+  {%  elif hash.hash1 != "" and hash.hash2 != "" and hash.hash3 != "" and hash.hash4 == "" %}
+  <img src="/media/QRCodes/{{ hash.hash1 }}/{{ hash.hash1 }}.jpg" alt="" style="width: 200px;
+  height: 200px;">
+  <img src="/media/QRCodes/{{ hash.hash2 }}/{{ hash.hash2 }}.jpg" alt="" style="width: 200px;
+  height: 200px;">
+  <img src="/media/QRCodes/{{ hash.hash3 }}/{{ hash.hash3 }}.jpg" alt="" style="width: 200px;
+  height: 200px;">
+
+  {%  elif hash.hash1 != "" and hash.hash2 != "" and hash.hash3 != "" and hash.hash4 != "" %}
+  <img src="/media/QRCodes/{{ hash.hash1 }}/{{ hash.hash1 }}.jpg" alt="" style="width: 200px;
+  height: 200px;">
+  <img src="/media/QRCodes/{{ hash.hash2 }}/{{ hash.hash2 }}.jpg" alt="" style="width: 200px;
+  height: 200px;">
+  <img src="/media/QRCodes/{{ hash.hash3 }}/{{ hash.hash3 }}.jpg" alt="" style="width: 200px;
+  height: 200px;">
+  <img src="/media/QRCodes/{{ hash.hash4 }}/{{ hash.hash4 }}.jpg" alt="" style="width: 200px;
+  height: 200px;">
+  {% endif %}
+  {% endif %}
+
+
+<p>{{ user }}</p>
+{% if user.profile.user_type == "Pickup" and object.pickup_name == None %}
+<a href="{% url  'pic-new-order' object.id %}">Pick up now!</a>
+{% elif user.profile.user_type == "Storage" and object.storage_name == None %}
+<a href="{% url  'store-order' object.id %}">Store!</a>
+{% elif user.profile.user_type == "Delivery" and object.delivery_name == None %}
+<a href="{% url  'deliver-order' object.id %}">Deliver!</a>
+{% endif %}
+
+</div>
+</div>
+</div>
+</article>
+{% endblock content %}

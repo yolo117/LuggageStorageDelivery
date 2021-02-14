@@ -1,16 +1,34 @@
 {% extends "info/base.html" %}
 {% block content %}
     <h2>Home Template </h2>
-    {% for item in Activities %}
-    
-    <img src="{{item.user_name.profile.image.url}}" alt="">
-    <h3> ID for Tracking: {{ item.activity_id }}</h3>
-      <p> Pickup date: {{ item.pickup_date }} </p>
-      <p> Pickup Location: {{ item.pickup_destination }} </p>
-      <p> Delivery Day: {{ item.delivery_day }} </p>
-      <p> Delivery Location: {{ item.delivery_address }} </p>
-      <p> Date of order placement: {{ item.date_user_requested_service }} </p>
-      <p> User: {{ item.user_name }} </p>
 
+
+    {% if user.profile.user_type == "User" %}
+    <h1 class=""></h1>
+    <a class="btn btn-dark" href="{% url 'new-order' %}">Create New Request!</a>
+    {% elif user.profile.user_type == "Pickup" %}
+    <h1 class=""></h1>
+    <a class="btn btn-dark" href="{% url 'unaccepted-activity' %}">Accept new Pickups!</a>
+    {% elif user.profile.user_type == "Storage" %}
+    <h1 class=""></h1>
+    <a class="btn btn-dark" href="{% url 'store-luggage' %}">Accept incoming Luggage!</a>
+    {% elif user.profile.user_type == "Delivery" %}
+    <h1 class=""></h1>
+    <a class="btn btn-dark" href="{% url 'nondeliver-activity' %}">select luggage to deliver!</a>
+    {% endif%}
+    {% if Activities %}
+    <br><br> <br>
+    <h2 ><b>List of all the requests </b></h2>
+    {% for item in Activities %}
+    <article class="media content-section">
+  <img class="rounded-circle article-img" src="{{ item.user_name.profile.image.url }}">
+  <div class="media-body">
+    <div class="list-group">
+      <a class="mr-2" href="{% url 'activity-detail' item.id %}">{{ item.activity_id }}</a>
+      <small class="text-muted">{{ item.date_user_requested_service|date:"F d, Y" }}</small>
+    </div>
+  </div>
+</article>
     {% endfor %}
+    {% endif %}
 {% endblock content %}
